@@ -108,8 +108,10 @@ class Oggetto_Oneclick_Model_Order extends Mage_Core_Model_Abstract
         if ($customer) {
             $quote->assignCustomer($customer);
             $address = array_shift($customer->getAddresses());
-            $quote->setBillingAddress($address);
-            $quote->setShippingAddress($address);
+            if ($address) {
+                $quote->setBillingAddress($address);
+                $quote->setShippingAddress($address);
+            }
         } else {
             $quote->setIsMultiShipping(false);
             $quote->setCheckoutMethod('guest');
