@@ -1,0 +1,88 @@
+<?php
+/**
+ * Oggetto one click orders extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto Oneclik module to newer versions in the future.
+ * If you wish to customize the Oggetto Oneclick module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_Oneclick
+ * @copyright  Copyright (C) 2011 Oggetto Web ltd (http://oggettoweb.com/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<h2>One click order</h2>
+<?php
+/**
+ * @var $product Mage_Catalog_Model_Product
+ */
+$attribute = $this->getRequest()->getPost()['super_attribute'];
+$product = Mage::registry('product');
+$customer_name = Mage::getSingleton('customer/session')->isLoggedIn() ? Mage::registry('customer_name') : '';
+$contact_telephone = Mage::getSingleton('customer/session')->isLoggedIn() ? Mage::registry('customer_phone') : '';
+?>
+<h3>Product info</h3>
+<h4><span>Sku: <?php echo $product->getSku() ?></span><br>
+<span>Name: <?php echo $product->getName() ?></span><br>
+<span>Price: <?php echo $product->getPrice() ?></span><br></h4>
+<?php if ($product->getSpecialPrice()): ?>
+        <h4><span>Special price: <?php echo $product->getSpecialPrice() ?></span></h4><br>
+<?php endif; ?>
+<h3>Customer info</h3>
+<form method="post" id="create_order" action="<?php echo $this->getUrl('oneclick/index/order') ?>">
+    <input type="hidden" name="back_url" value="<?php echo Mage::registry('back_url') ?>"/>
+    <input type="hidden" name="product_sku" value="<?php echo $product->getSku() ?>"/>
+    <input type="hidden" name="product_name" value="<?php echo $product->getName() ?>"/>
+    <input type="hidden" name="super_attribute_code" value="<?php echo key($attribute) ?>">
+    <input type="hidden" name="super_attribute_value" value="<?php echo $attribute[key($attribute)] ?>">
+    <input type="hidden" name="store_id" value="<?php echo Mage::app()->getStore()->getId() ?>">
+    <table>
+        <tr>
+            <td style="text-align: left;padding: 3px;">
+                <label for="qty">QTY:</label>
+            </td>
+            <td style="text-align: left;padding: 3px;">
+                <input type="text" id="qty" name="qty" class="required-entry" value="<?php echo $this->getRequest()->getPost()['qty'] ?>" style="width: 3em"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left;padding: 3px;">
+                <label for="customer_name">Your name:</label>
+            </td>
+            <td style="text-align: left;padding: 3px;">
+                <input type="text" id="customer_name" name="customer_name" class="required-entry" value="<?php echo $customer_name ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: left;padding: 3px;">
+                <label for="customer_phone">Your telephone: +7</label>
+            </td>
+            <td style="text-align: left;padding: 3px;">
+                <input type="tel" id="customer_phone" name="customer_phone" class="required-entry validate-telephone" style="width: 10em" value="<?php echo $contact_telephone ?>"/>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="confirm order"/>&nbsp;Send this info and we will call you back!
+</form>
+<script type="text/javascript">
+    //<! [CDATA[
+    var questionForm = new VarienForm('create_order', true);
+    Validation.add('validate-telephone','Failed to validate telephone',function(telephone){
+        var prototype = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{2})[-. ]?([0-9]{2})$/;
+        if(telephone.match(prototype)) {
+            return true;
+        } return false;
+    });
+    //]] >
+</script>

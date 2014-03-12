@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Oggetto one click orders extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto Oneclick module to newer versions in the future.
+ * If you wish to customize the Oggetto Oneclick module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_Oneclick
+ * @copyright  Copyright (C) 2011 Oggetto Web ltd (http://oggettoweb.com/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Oggetto_Oneclick>
+            <version>0.0.1</version>
+        </Oggetto_Oneclick>
+    </modules>
+    <phpunit>
+        <suite>
+            <modules>
+                <Oggetto_Oneclick/>
+            </modules>
+        </suite>
+    </phpunit>
+    <global>
+        <fieldsets>
+            <customer_account>
+                <oc_telephone>
+                    <create>1</create>
+                    <update>1</update>
+                </oc_telephone>
+            </customer_account>
+        </fieldsets>
+        <helpers>
+            <oggetto_oneclick>
+                <class>Oggetto_Oneclick_Helper</class>
+            </oggetto_oneclick>
+        </helpers>
+        <blocks>
+            <oggetto_oneclick>
+                <class>Oggetto_Oneclick_Block</class>
+            </oggetto_oneclick>
+        </blocks>
+        <resources>
+            <oneclick_setup>
+                <setup>
+                    <module>Oggetto_Oneclick</module>
+                    <class>Oggetto_Oneclick_Model_Customer_Setup</class>
+                </setup>
+            </oneclick_setup>
+            <oneclick_table_setup>
+                <setup>
+                    <module>Oggetto_Oneclick</module>
+                    <class>Oggetto_Oneclick_Model_Order_Setup</class>
+                </setup>
+            </oneclick_table_setup>
+        </resources>
+        <models>
+            <oggetto_oneclick>
+                <class>Oggetto_Oneclick_Model</class>
+                <resourceModel>oneclick_resource</resourceModel>
+            </oggetto_oneclick>
+            <oneclick_resource>
+                <class>Oggetto_Oneclick_Model_Resource</class>
+                <entities>
+                    <orders>
+                        <table>oneclick_orders</table>
+                    </orders>
+                </entities>
+            </oneclick_resource>
+        </models>
+    </global>
+    <frontend>
+        <routers>
+            <oneclick>
+                <use>standard</use>
+                <args>
+                    <module>Oggetto_Oneclick</module>
+                    <frontName>oneclick</frontName>
+                </args>
+            </oneclick>
+        </routers>
+        <layout>
+            <updates>
+                <oneclick>
+                    <file>oggetto_oneclick.xml</file>
+                </oneclick>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Oggetto_OneClick before="Mage_Adminhtml">Oggetto_Oneclick_Adminhtml</Oggetto_OneClick>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <oneclick>
+                    <file>oggetto_oneclick.xml</file>
+                </oneclick>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>
